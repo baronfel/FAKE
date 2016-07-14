@@ -21,11 +21,10 @@ let specialFlags =
 
 let parseArgs cmdArgs = 
     let (|KeyValue|Flag|TargetName|) ((i,arg) : int * string) =
-        if i = 0 then TargetName arg
-        else
-            match arg.IndexOf '=' with
-            | -1 -> Flag arg
-            | i -> KeyValue (arg.Substring(0, i), arg.Substring(i + 1, arg.Length - i - 1))
+        match arg.IndexOf '=' with
+        | -1 when i = 0 -> TargetName arg
+        | -1 -> Flag arg
+        | i -> KeyValue (arg.Substring(0, i), arg.Substring(i + 1, arg.Length - i - 1))
 
     cmdArgs
     |> Seq.skip 1
